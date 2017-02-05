@@ -24,10 +24,10 @@
                         <div class="tab-pane fade in active" id="tab1primary">
                       		<div class="row">
                                 <div class="col-md-8">
-                                	<div id="latest-transactions"><b>Latest Transactions</b></div>
+                                	<div id="latest-transactions">Latest Transactions</div>
                                 </div>
                                 <div class="col-md-4">
-                                	<div id="find-block"><b>Find a Block Address</b></div>
+                                	<div id="find-block">Find a Block Address</div>
                            		</div>
                             </div>
                             
@@ -68,8 +68,8 @@
                                                 </tr>
                                             </tbody>
                                        </table>
-                            		</div>                          
-                            	</div>     
+                            		</div>                           
+                            	</div>      
                        		
                          			<div class="col-md-4">
                                      	<div id="custom-search-input">
@@ -104,22 +104,111 @@
                                                     </tr>
                                             	</tbody>
                                         	</table>
-                                        </div>
-                                    </div>
-                            	</div>                                  
-                        	</div>  
+                                        </div> 
+                                    </div> 
+                            	</div>     
                             
                             <div class="row">
                             	<div class="col-md-12">
                             		<img src="images/ethereum-logo.jpg" class="img-responsive" alt="ethereum-logo">
                             	</div>
+                            </div>                                      
+                                                           
+                        	</div>   
+                        <div class="tab-pane fade" id="tab2primary">
+                      		<div class="row">
+                                <div class="col-md-6">
+                                	<div id="fill-account-number">Fill in your Account Number</div>
+                                </div>
+                                <div class="col-md-6">                        	
+                                	<div id="transaction-history">Transaction History</div>
+                           		</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                	<div id="account-input">
+                                        <div class="input-group">
+                                            <input type="text" class="search-query form-control" placeholder="e.g. 39GwgMLReUGqhFUcedU7L6bRoYx8GufYvG" />
+                                            <span class="input-group-btn">
+                                            	<button type="button" id="account-submit" class="btn btn-primary">Submit</button>
+                                            </span>      
+                                       </div>  
+                                   </div>   
+                                </div>     
                             </div>
                             
+                            <div class="row">
+                            	<div class="col-md-6">
+                                	<div id="Balance">Your Balance: 32,500</div>                            
+                                </div>
+                                <div class="col-md-6">
+                                	<table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>To</th>
+                                                    <th>Block</th>
+                                                    <th>TimeStamp</th>
+                                                    <th>Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Nick</td>
+                                                    <td>Nick</td>
+                                                    <td>Nick</td>
+                                                    <td>5</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nick</td>
+                                                    <td>Nick</td>
+                                                    <td>Nick</td>
+                                                    <td>5</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nick</td>
+                                                    <td>Nick</td>
+                                                    <td>Nick</td>
+                                                    <td>5</td>
+                                                </tr>
+                                            </tbody>
+                                       </table>                 
+                                </div>     
+                            </div>
                             
+                            <div class="row">
+                                <div id="send-transaction-text" class="col-md-6">Send Transaction</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                <input type="text" class="search-query form-control" placeholder="Recipient Address" />
+                                </div>
+                            </div>
+                    	
+                            <div class="row">
+                              <div class="col-md-3">
+                                  <div class="input-group">
+                                    <input type="text" id="amount-to-send" class="search-query form-control" placeholder="Amount" /> 
+                                  </div>  
+                              </div>
+
+                              <div class="col-md-2">
+                              	<button type="button" id="transaction-submit" class="btn btn-primary">Send</button>	
+                              </div>
                             
-                      	</div>
-                        <div class="tab-pane fade" id="tab2primary">
-                      
+                            </div>
+                            
+                             <div class="row">
+                            	<div class="col-md-6">
+                            		<img src="images/ethereum-logo.jpg" id="wallet-logo-footer" class="img-responsive" alt="ethereum-logo">
+                            	</div>
+                                <div class="col-md-6">
+                            		 <div id="account-number-text">Your Account Number:</div>
+                            	</div>
+                            </div>  
+                            <div class="row">
+                                <div class="col-md-6"></div>
+                                    <div id="account-number-value" class="col-md-2">0xb9158Aad5E4e1a7BAa83840B499CFEd1c0730C0D</div>                      
+                            </div>        
                       	</div>
                     </div>
                 </div>
