@@ -23,6 +23,23 @@ DummyController.prototype._init = function () {
 	console.log(" DUMMY initialization " );
 };
 
+
+// override the _getBlocks function to actually so something usefull
+DummyController.prototype._getBlocks = function () { 
+	// here comes the code for initializing our blockchain
+	console.log(" getting the blocks " );
+	
+	var blocks = [
+    "blokje 1",
+    "blokje 2",
+    "blokje 3"
+    ];
+	
+	console.log(blocks);
+	return blocks;
+};
+
+
 //
 //  TODO: here we add implementations for all underscore functions we need
 //

@@ -2,8 +2,12 @@ BaseController = function(){}
 
 BaseController.prototype._init = function(){
  // this method must be overridden by the subclasses
+ throw "NotImplementedException";
 };
-
+BaseController.prototype._getBlocks = function(){
+ // this method must be overridden by the subclasses
+ throw "NotImplementedException";
+};
 
 // this is the init method that can be called by the app
 // we do some logging 
@@ -14,12 +18,18 @@ BaseController.prototype.init = function(){
  this._init();
 };
 
+BaseController.prototype.getBlocks = function(){
+ console.log("getBlocks");
+ return(this._getBlocks());
+};
+
 
 //
 // TODO: here we add implementations for all functions we need
 // a "normal"  function that can be called from our app 
 // which does some basic logging and than calls the underscore function
 //
+
 
 
 module.exports = BaseController;
