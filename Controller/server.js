@@ -1,7 +1,12 @@
 var http = require('http');
 var Web3 = require('web3');
 var express = require('express'); 
+var path = require("path");
 var app = express();
+
+// We need to do this, so we can include the libraries 
+// from the View folder
+app.use(express.static(__dirname + '/../View'));
 
 console.log("Initiating server...");
 
@@ -32,6 +37,7 @@ app.get('/', function (req, res) {
    var list = [];
    var y = 1;
    var i = 0;
+   /*
    while (i < y)
    {
 	      
@@ -51,8 +57,10 @@ app.get('/', function (req, res) {
 	
 	i = i + 1;
    }
+   */
    
-   res.send(list);
+   res.sendFile(path.join(__dirname + '/../View/index.html'));
+   //res.send(list);
 })
 
 var server = app.listen(8081, function () {
