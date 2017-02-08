@@ -1,5 +1,25 @@
 # Ethereum
 
+Functions for in the Controllers:
+
+Admin
+	getBlock(block ID) -> structuur terug met alle info
+	getTransactions -> laatste 5
+	getTransactions(block ID)
+	getTransaction(trans ID)
+	GetInfo()
+		Name,Status,TotalAmount,BlockNumber ....
+
+Wallet:	
+	GetBalance(accountID)
+	GetTransactionHistory(accountID) -> laatste 5
+	SendTransaction(recipient address, amount)
+	
+	
+
+
+
+
 To start the node.js server, our generic API, go in cmd to the /Controller folder.
 
 Type: node server.js
