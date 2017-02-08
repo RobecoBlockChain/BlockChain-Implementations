@@ -1,26 +1,18 @@
-var http = require('http');
-//var Web3 = require('web3');
+var Web3 = require('web3');
 var express = require('express'); 
-var path = require("path");
 var app = express();
 var controller = require('./DummyController.js');
 var c = new controller();
 
-// We need to do this, so we can include the libraries 
-// from the View folder
-app.use(express.static(__dirname));
-
 console.log("Initiating server...");
 
-// set the view engine to ejs
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + "/views"));
 
 app.get('/', function(req, res) {
-  
-   var blocks = c.getBlocks();
+   var blocks = c.getBlocks(); 
    
-   
-    res.render('pages/index', {
+    res.render('index', {
         blocks: blocks
     });
 });
