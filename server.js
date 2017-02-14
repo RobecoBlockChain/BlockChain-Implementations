@@ -1,24 +1,53 @@
 var Web3 = require('web3');
 var express = require('express'); 
 var controller = require('./Controllers/DummyController.js');
+var bodyParser = require('body-parser')
 var c = new controller();
 var app = express();
 
 console.log("Initiating server...");
 
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + "/Views"));
+app.use(express.static(__dirname + "/Views"), bodyParser.urlencoded({ extended: false }));
 
+// retrieves values for the Admin Page
 app.get('/', function(req, res) {
-   var blocks = c.getBlocks(); 
-   
+	var blocks = c.getBlocks(); 
+	var info = c.getInfo();
+	var transactions = c.getTransactions();
+	
     res.render('index', {
-        blocks: blocks
+        blocks: blocks,
+		info: info,
+		transactions: transactions
     });
 });
 
+// responds to the post that is triggered on the Admin Page
+// when the user wants to find a block address
+app.post('/getBlock', function(req, res) {
+	var block = c.getBlock(req.body.blockNumber);
+	
+	res.send(block);	
+});
+
+// responds to the post that is triggered on the Wallet Page
+// when the user fills in his account number
+app.post('/getAccount', function(req, res) {
+	//getBalance() // setDefaultAccount
+	//getTransactionHistory()	
+	//TODO
+});
+
+// responds to the post that is triggered on the Wallet Page
+// when the user sends a transaction
+app.post('/getAccount', function(req, res) {
+	//sendTransaction(from, to, amount)
+	//TODO
+});
+
 app.listen(8080);
-console.log('8080 is the magic port');
+console.log('8080 is the magic port.');
 
 /*
 if (typeof web3 !== 'undefined') 

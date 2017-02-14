@@ -16,36 +16,111 @@ function DummyController() {
 // we let the DummyController inherit from BaseController
 util.inherits(DummyController, BaseController);
 
-
-// override the _init function to actually so something usefull
 DummyController.prototype._init = function () { 
 	// here comes the code for initializing our blockchain
-	console.log(" DUMMY initialization " );
+	console.log("Dummy initialization..." );
 };
 
+// here are the functions that will overwrite the basecontroller
+DummyController.prototype._getBlock = function (blockNumber) { 
+	var transaction = {
+		from: "Piet",
+		to: "Jan",
+		timestamp: 1429287689,
+		value: 500
+		
+	};
+	var transactions = [transaction, transaction];
+	
+	var block = { 
+		number: blockNumber, 
+		transactions: transactions, 
+		timestamp: 1429287689 
+	};
+	
+	//console.log(block);
+	return block;
+};
 
-// override the _getBlocks function to actually so something usefull
 DummyController.prototype._getBlocks = function () { 
-	// here comes the code for initializing our blockchain
-	console.log(" getting the blocks " );
+	var transaction = {
+		from: "Piet",
+		to: "Jan",
+		blockNumber: 123,
+		timestamp: 1429287689,
+		value: 500
+		
+	};
+	var transactions = [transaction, transaction];
 	
-	var blocks = [
-    "blokje 1",
-    "blokje 2",
-    "blokje 3"
+	 var blocks = [
+        { number: 121, transactions: transactions, timestamp: 1429287689 },
+        { number: 122 ,transactions: transactions, timestamp: 1429287688 },
+		{ number: 123 ,transactions: transactions, timestamp: 1429287688 },
+		{ number: 124 ,transactions: transactions, timestamp: 1429287688 },
+        { number: 125 ,transactions: transactions, timestamp: 1429287686 }
     ];
-	
-	console.log(blocks);
+
+	//console.log(blocks);
 	return blocks;
 };
 
+DummyController.prototype._getInfo = function () { 
+	var info = {
+		network: "Online",
+		totalMoney: 1000000,
+		currentBlockNumber: 125,
+		currentTime: new Date().toISOString(),
+	};
+	
+	//console.log(info);
+	return info;
+};
 
-//
-//  TODO: here we add implementations for all underscore functions we need
-//
+DummyController.prototype._getTransactions = function () { 
+	var transaction = {
+		from: "Piet",
+		to: "Jan",
+		value: 500,
+		blockNumber: 123,
+		timestamp: 1429287689
+	};
+	var transactions = [transaction, transaction, transaction, transaction, transaction];
+	
+	//console.log(transactions);
+	return transactions;
+};
 
+DummyController.prototype._getBalance = function () { 
+	var balance = 32520;
+	
+	//console.log(balance);
+	return balance;
+};
+
+DummyController.prototype._getTransactionHistory = function () { 
+	var transaction = {
+		from: "Piet",
+		to: "Jan",
+		value: 500,
+		blockNumber: 123
+	};
+	var transactions = [transaction, transaction, transaction, transaction, transaction];
+	
+	//console.log(transactions);
+	return transactions;
+};
+
+DummyController.prototype._sendTransaction = function () { 
+	
+};
+
+DummyController.prototype._getAccountNumber = function () { 
+	var accountNumber = "0xb9158Aad5E4e1a7BAa83840B499CFEd1c0730C0D";
+	
+	//console.log(accountNumber);
+	return accountNumber;
+};
 
 // export all functions so they can be used by our app
 module.exports = DummyController;
-
-

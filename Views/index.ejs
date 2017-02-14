@@ -11,9 +11,7 @@
 
 <body>       
     <div class="container">
-
-    <div class="row">
-			
+		<div class="row">		
     	    <div class="panel with-nav-tabs panel-primary">
                 <div class="panel-heading">
                         <ul class="nav nav-tabs">
@@ -25,10 +23,7 @@
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="tab1primary">
                       		<div class="row">
-                                <div class="col-md-8">
-								<!--<% blocks.forEach(function(block) { %>
-									<li><%= block %></li>
-								<% }); %>-->
+                                <div class="col-md-8">								
                                 	<div class="latest-transactions">Latest Transactions</div>
                                 </div>
                                 <div class="col-md-4">
@@ -45,32 +40,20 @@
                                                     <th>From</th>
                                                     <th>To</th>
                                                     <th>Block</th>
-                                                    <th>TimeStamp</th>
+													<th>Timestamp</th>
                                                     <th>Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>5</td>
-                                                </tr>
+                                               <% transactions.forEach(function(transaction) { %>
+												<tr>
+                                                    <td><%= transaction.from %></td>
+													<td><%= transaction.to %></td>
+													<td><%= transaction.blockNumber %></td>
+													<td><%= transaction.timestamp %></td>
+													<td><%= transaction.value %></td>
+												</tr>
+											 <% }); %>
                                             </tbody>
                                        </table>
                             		</div>                           
@@ -79,9 +62,9 @@
                          			<div class="col-md-4">
                                      	<div id="custom-search-input">
                                         	<div class="input-group">
-                                                <input type="text" class="search-query form-control" placeholder="Search" />
+                                                <input id="find-block-input" type="text" class="search-query form-control" placeholder="Search a blockNumber" />
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-danger" type="button">
+                                                    <button id="find-block-info" class="btn btn-danger" type="button">
                                                         <span class="glyphicon glyphicon-search"></span>
                                                     </button>
                                                 </span>      
@@ -93,19 +76,19 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>Network</td>
-                                                        <td><span class="glyphicon glyphicon-ok" style="color:green"</span> Online</td>
+                                                        <td><span class="glyphicon glyphicon-ok" style="color:green"</span> <%= info.network %></td>
                                                     </tr>
                                                      <tr>
                                                         <td>Total Money</td>
-                                                        <td><span class="glyphicon glyphicon-bitcoin"</span> 1,000,000</td>
+                                                        <td><span class="glyphicon glyphicon-bitcoin"</span> <%= info.totalMoney %></td>
                                                     </tr>
                                                      <tr>
                                                         <td>Current Block</td>
-                                                        <td><span class="glyphicon glyphicon-unchecked"</span> #1541</td>
+                                                        <td><span class="glyphicon glyphicon-unchecked"</span> <%= info.currentBlockNumber %></td>
                                                     </tr>
                                                      <tr>
                                                         <td>Current Time</td>
-                                                        <td><span class="glyphicon glyphicon-time"</span> 15:32:45</td>
+                                                        <td><span class="glyphicon glyphicon-time"</span> <%= info.currentTime %></td>
                                                     </tr>
                                             	</tbody>
                                         	</table>
@@ -122,35 +105,19 @@
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th>From</th>
-                                                    <th>To</th>
                                                     <th>Block</th>
+													<th>Transactions</th>
                                                     <th>TimeStamp</th>
-                                                    <th>Amount</th>
                                                 </tr>
-                                            </thead>
+                                            </thead>											
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>5</td>
-                                                </tr>
+											 <% blocks.forEach(function(block) { %>
+												<tr>
+                                                    <td><%= block.number %></td>
+													<td><button id="<%=block.number%>" type="button">Transactions</button></td>
+													<td><%= block.timestamp %></td>
+												</tr>
+											 <% }); %>
                                             </tbody>
                                        </table>
                             		</div>                           
@@ -264,8 +231,53 @@
             </div>
         </div>
 	</div>
-
 	<script language="javascript" type="text/javascript" src="libraries/jquery-3.1.1.min.js"></script>	
-    <script language="javascript" type="text/javascript" src="libraries/bootstrap-3.3.7.min.js"></script>	
+    <script language="javascript" type="text/javascript" src="libraries/bootstrap-3.3.7.min.js"></script>		
+	
+	<script>
+	
+	// block contains an array of transaction objects
+	// we parse them here so we can show them nicely in a string
+	<% blocks.forEach(function(block) { %>
+		$( "#<%= block.number %>" ).click(function() {
+			var transactionsList = "Transactions linked to this block:\n";
+			<% block.transactions.forEach(function(transaction) { %>
+				transactionsList += "From: <%=transaction.from%>";
+				transactionsList += " To: <%=transaction.to%>";
+				transactionsList += " Block: <%=transaction.blockNumber%>";			
+				transactionsList += " Amount: <%=transaction.value%>";
+				transactionsList += "\n";						
+			<% }); %>
+			alert(transactionsList);
+		});
+	 <% }); %>
+
+	// retrieves user input from textbox and finds the
+	// block with that blocknumber
+	// block contains an array of transaction objects
+	// we parse them here so we can show them nicely in a string
+	$("#find-block-info").on('click', function() {
+		$.ajax({
+		  type: 'POST',
+		  url: '/getBlock',
+		  data: { blockNumber: $( "#find-block-input" ).val() },
+		  success: function(resultData) {	  
+			var transactionsList = "\nTransactions linked to this block:\n";
+			 resultData.transactions.forEach(function(transaction) { 
+				transactionsList += "From: " + transaction.from;
+				transactionsList += " To: " + transaction.to;
+				transactionsList += " Timestamp: " +  transaction.timestamp;				
+				transactionsList += " Amount: " + transaction.value;
+				transactionsList += "\n";						
+			 }); 
+			 
+			 var output = "BlockNumber: " + resultData.number + "\nTimestamp: " + resultData.timestamp + transactionsList;
+			 alert(output);
+		  }
+		});
+	});
+
+	</script>
+	
 </body>
 </html>
