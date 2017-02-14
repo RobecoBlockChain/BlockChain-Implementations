@@ -1,0 +1,185 @@
+#find-block {
+	font-weight: bold;
+	margin-right: 90px;	
+	font-size: 19px;
+}
+
+.latest-transactions {
+	font-weight: bold;
+	font-size: 19px;
+	text-align: center;		
+	margin-right: 90px;	
+}
+
+#latest-transactions-table {
+	margin-top: 5px;
+}
+
+.table th {
+   text-align: center;   
+}
+
+#info-bar {
+	margin-top: 50px;	
+}
+
+#account-submit {
+	margin-left: 5px;	
+}
+
+#Balance {
+	font-size: 20px;	
+	margin-top: 25px;	
+}
+
+#account-input {
+	margin-top: 5px;	
+}
+
+#transaction-history {
+	text-align: center;	
+	font-size: 19px;
+	font-weight: bold;
+}
+
+#fill-account-number {
+	font-size: 19px;
+	font-weight: bold;
+}
+
+#send-transaction-text {
+	font-size: 20px;
+	font-weight:bold;	
+	margin-bottom: 10px;
+}
+
+#amount-to-send {
+	margin-top:5px;
+}
+
+#transaction-submit {
+	margin-top: 5px;
+}
+
+.img-responsive {
+	margin-right: 555px;	
+}
+
+#account-number-value {
+	text-align: center;
+	margin-bottom: 20px;
+	font-size: 16px;
+}
+
+#account-number-text {
+	font-size: 20px;
+	font-weight:bold;			
+}
+
+#wallet-logo-footer {
+	margin-top: 40px;	
+}
+
+/* Code below is for the search Bar */
+
+#custom-search-input {
+        margin:0;
+        margin-top: 5px;
+        padding: 0;
+    }
+ 
+#custom-search-input .search-query {
+	padding-right: 3px;
+	padding-right: 4px \9;
+	padding-left: 3px;
+	padding-left: 4px \9;
+	/* IE7-8 doesn't have border-radius, so don't indent the padding */
+	width: 90%;
+	margin-bottom: 0;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+#custom-search-input button {
+	border: 0;
+	background: none;
+	/** belows styles are working good */
+	padding: 2px 5px;
+	margin-top: 2px;
+	position: relative;
+	left: -28px;
+	/* IE7-8 doesn't have border-radius, so don't indent the padding */
+	margin-bottom: 0;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	color:#D9230F;
+}
+
+.search-query:focus + button {
+	z-index: 3;   
+}
+
+/* Code below is for the panel */
+.nav-tabs > li, .nav-pills > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+     zoom:1; /* hasLayout ie7 trigger */
+}
+
+.nav-tabs, .nav-pills {
+    text-align:center;
+}
+.panel{border-bottom:0;
+border-left:0;
+border-right:0;}
+.panel.with-nav-tabs .panel-heading{
+    padding: 5px 5px 0 5px;
+}
+.panel.with-nav-tabs .nav-tabs{
+	border-bottom: none;
+}
+.panel.with-nav-tabs .nav-justified{
+	margin-bottom: -1px;
+}
+
+.with-nav-tabs.panel-primary .nav-tabs > li > a,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+    color: #fff;
+}
+.with-nav-tabs.panel-primary .nav-tabs > .open > a,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:focus,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+	color: #fff;
+	background-color: #3071a9;
+	border-color: transparent;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:focus {
+	color: #428bca;
+	background-color: #fff;
+	border-color: #428bca;
+	border-bottom-color: transparent;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu {
+    background-color: #428bca;
+    border-color: #3071a9;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a {
+    color: #fff;   
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+    background-color: #3071a9;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+    background-color: #4a9fe9;
+}
