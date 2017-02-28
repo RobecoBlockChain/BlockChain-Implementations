@@ -144,7 +144,7 @@
                                 <div class="col-md-4">
                                 	<div id="account-input">
                                         <div class="input-group">
-                                            <input type="text" class="search-query form-control" placeholder="e.g. 39GwgMLReUGqhFUcedU7L6bRoYx8GufYvG" />
+                                            <input type="text" id="account-number-input" class="search-query form-control" placeholder="e.g. 39GwgMLReUGqhFUcedU7L6bRoYx8GufYvG" />
                                             <span class="input-group-btn">
                                             	<button type="button" id="account-submit" class="btn btn-primary">Submit</button>
                                             </span>      
@@ -155,39 +155,16 @@
                             
                             <div class="row">
                             	<div class="col-md-6">
-                                	<div id="Balance">Your Balance: 32,500</div>                            
+                                	<div class="balance-style"> Your Balance:</div><div class="balance-style" id="Balance"> </div>                            
                                 </div>
                                 <div class="col-md-6">
-                                	<table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>To</th>
-                                                    <th>Block</th>
-                                                    <th>TimeStamp</th>
-                                                    <th>Amount</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>Nick</td>
-                                                    <td>5</td>
-                                                </tr>
-                                            </tbody>
-                                       </table>                 
+								
+									<div id="transactions-history-table">
+									
+									
+									</div>
+								
+										             
                                 </div>     
                             </div>
                             
@@ -236,7 +213,7 @@
 	
 	<script>
 	
-	// block contains an array of transaction objects
+	// ADMIN PAGE: block contains an array of transaction objects
 	// we parse them here so we can show them nicely in a string
 	<% blocks.forEach(function(block) { %>
 		$( "#<%= block.number %>" ).click(function() {
@@ -252,7 +229,48 @@
 		});
 	 <% }); %>
 
-	// retrieves user input from textbox and finds the
+	 // retrieves user input from textbox on WALLET page and finds the
+	 // balance, latest transactionhistory from this account-input
+	 // and outputs it on the right div
+	 $("#account-submit").on('click', function() {
+		$.ajax({
+		  type: 'POST',
+		  url: '/getAccount',
+		  data: { accountNumber: $( "#account-number-input" ).val() },
+		  success: function(resultData) {	  
+			$("#account-number-value").text(resultData.accountNumber);
+			$("#Balance").text(resultData.balance);
+			
+			var table = '<table class="table table-bordered"><thead><tr>' +
+									'<th>To</th>' +
+									'<th>Block</th>' +
+									'<th>TimeStamp</th>' +
+									'<th>Amount</th>' + 
+								'</tr>' + 
+							'</thead>' + 
+							'<tbody>';
+							
+							resultData.transactionHistory.forEach(function(transaction) { 
+							
+								table += '<tr>';
+							
+								table += '<td>' + transaction.to + '</td>';
+								table += '<td>' +  transaction.block + '</td>';				
+								table += '<td>' + transaction.timestamp + '</td>';
+								table += '<td>' + transaction.amount	+ '</td>';
+
+								table += '</tr>';
+							 }); 
+							
+							'</tbody>' + 
+					   '</table>';
+	
+			$("#transactions-history-table").html(table);
+		  }
+		});
+	});
+	
+	// retrieves user input from textbox on ADMIN page and finds the
 	// block with that blocknumber
 	// block contains an array of transaction objects
 	// we parse them here so we can show them nicely in a string

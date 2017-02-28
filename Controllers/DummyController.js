@@ -91,28 +91,29 @@ DummyController.prototype._getTransactions = function () {
 	return transactions;
 };
 
-DummyController.prototype._getBalance = function () { 
+DummyController.prototype._getBalance = function (accountNumber) { 
 	var balance = 32520;
 	
 	//console.log(balance);
 	return balance;
 };
 
-DummyController.prototype._getTransactionHistory = function () { 
+DummyController.prototype._getTransactionHistory = function (accountNumber) { 
 	var transaction = {
-		from: "Piet",
-		to: "Jan",
-		value: 500,
-		blockNumber: 123
+		to: "Piet",
+		block: "#1235",
+		timestamp: 1429287689,
+		amount: 123
 	};
 	var transactions = [transaction, transaction, transaction, transaction, transaction];
 	
+	//console.log("accountNumber: " + accountNumber);
 	//console.log(transactions);
 	return transactions;
 };
 
-DummyController.prototype._sendTransaction = function () { 
-	
+DummyController.prototype._sendTransaction = function (from, to, amount) { 
+	//TODO
 };
 
 DummyController.prototype._getAccountNumber = function () { 

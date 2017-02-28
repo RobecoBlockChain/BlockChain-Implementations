@@ -27,9 +27,10 @@
 	margin-left: 5px;	
 }
 
-#Balance {
+.balance-style {
 	font-size: 20px;	
-	margin-top: 25px;	
+	margin-top: 25px;
+	
 }
 
 #account-input {

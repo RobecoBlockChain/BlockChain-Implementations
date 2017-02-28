@@ -10,6 +10,9 @@ console.log("Initiating server...");
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + "/Views"), bodyParser.urlencoded({ extended: false }));
 
+// Save the accountnumber for later use
+var defaultAccountNumber = "";
+
 // retrieves values for the Admin Page
 app.get('/', function(req, res) {
 	var blocks = c.getBlocks(); 
@@ -34,9 +37,15 @@ app.post('/getBlock', function(req, res) {
 // responds to the post that is triggered on the Wallet Page
 // when the user fills in his account number
 app.post('/getAccount', function(req, res) {
-	//getBalance() // setDefaultAccount
-	//getTransactionHistory()	
-	//TODO
+	defaultAccountNumber = req.body.accountNumber;
+
+	var resultData = {
+		accountNumber: defaultAccountNumber,
+		balance: c.getBalance(),
+	    transactionHistory: c.getTransactionHistory(defaultAccountNumber)
+	};
+	
+	res.send(resultData);
 });
 
 // responds to the post that is triggered on the Wallet Page
