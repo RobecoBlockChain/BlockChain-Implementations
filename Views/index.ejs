@@ -5,8 +5,10 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
         <meta charset="utf-8">       
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link rel="stylesheet" type="text/css" href="libraries/bootstrap-3.3.7.min.css">
-        <link rel="stylesheet" type="text/css" href="css/style.css">       
+		<link rel="stylesheet" type="text/css" href="libraries/bootstrap-3.3.7.min.css">
+		<link rel="stylesheet" type="text/css" href="libraries/css/alertify.min.css" />
+		<link rel="stylesheet" type="text/css" href="libraries/css/themes/default.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css">       	
 </head>
 
 <body>       
@@ -210,22 +212,23 @@
 	</div>
 	<script language="javascript" type="text/javascript" src="libraries/jquery-3.1.1.min.js"></script>	
     <script language="javascript" type="text/javascript" src="libraries/bootstrap-3.3.7.min.js"></script>		
-	
+	<script language="javascript" type="text/javascript" src="libraries/alertify.min.js"></script>
 	<script>
 	
 	// ADMIN PAGE: block contains an array of transaction objects
 	// we parse them here so we can show them nicely in a string
 	<% blocks.forEach(function(block) { %>
 		$( "#<%= block.number %>" ).click(function() {
-			var transactionsList = "Transactions linked to this block:\n";
+			var transactionsList = "Transactions linked to this block:<br>";
 			<% block.transactions.forEach(function(transaction) { %>
 				transactionsList += "From: <%=transaction.from%>";
-				transactionsList += " To: <%=transaction.to%>";
-				transactionsList += " Block: <%=transaction.blockNumber%>";			
-				transactionsList += " Amount: <%=transaction.value%>";
-				transactionsList += "\n";						
+				transactionsList += "<br>To: <%=transaction.to%>";
+				transactionsList += "<br>Block: <%=transaction.blockNumber%>";			
+				transactionsList += "<br>Amount: <%=transaction.value%>";
+				transactionsList += "<br><br>";						
 			<% }); %>
-			alert(transactionsList);
+			
+			alertify.alert(transactionsList);
 		});
 	 <% }); %>
 
@@ -280,17 +283,17 @@
 		  url: '/getBlock',
 		  data: { blockNumber: $( "#find-block-input" ).val() },
 		  success: function(resultData) {	  
-			var transactionsList = "\nTransactions linked to this block:\n";
+			var transactionsList = "<br>Transactions linked to this block:<br>";
 			 resultData.transactions.forEach(function(transaction) { 
-				transactionsList += "From: " + transaction.from;
-				transactionsList += " To: " + transaction.to;
-				transactionsList += " Timestamp: " +  transaction.timestamp;				
-				transactionsList += " Amount: " + transaction.value;
-				transactionsList += "\n";						
+				transactionsList += "<br>From: " + transaction.from;
+				transactionsList += "<br>To: " + transaction.to;
+				transactionsList += "<br>Timestamp: " +  transaction.timestamp;				
+				transactionsList += "<br>Amount: " + transaction.value;
+				transactionsList += "<br><br>";						
 			 }); 
 			 
-			 var output = "BlockNumber: " + resultData.number + "\nTimestamp: " + resultData.timestamp + transactionsList;
-			 alert(output);
+			 var output = "BlockNumber: " + resultData.number + "<br>Timestamp: " + resultData.timestamp + transactionsList;
+			 alertify.alert(output);
 		  }
 		});
 	});
