@@ -1,6 +1,7 @@
 var Web3 = require('web3');
 var express = require('express'); 
-var controller = require('./Controllers/DummyController.js');
+var dummyController = require('./Controllers/DummyController.js');
+var controller = require('./Implementations/Ethereum/EthereumController.js');
 var bodyParser = require('body-parser')
 var c = new controller();
 var app = express();

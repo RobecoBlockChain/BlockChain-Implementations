@@ -56,6 +56,7 @@ BaseController.prototype.getBlocks = function(){
 		timestamp: timestamp,
 		value: int	
 	};
+	
 	/*
 	var block = { 
 		number: INT, 
