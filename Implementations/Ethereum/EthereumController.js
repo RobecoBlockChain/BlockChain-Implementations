@@ -1,6 +1,7 @@
 // the EthereumController is our ethereum subclass from BaseController
 // here we implement all specific functions (that start with an underscore _)
 // in the EthereumController we make use of the web3.js API
+// See https://github.com/ethereum/wiki/wiki/JavaScript-API
 
 var BaseController = require('../../Controllers/BaseController.js');
 var util = require('util'); 
@@ -18,8 +19,14 @@ function timeConverter(UNIX_timestamp){
   var date = a.getDate();
   var hour = a.getHours();
   var min = a.getMinutes();
-  var sec = a.getSeconds();
-  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+  var sec = a.getSeconds().toString();
+  
+  // We want a 4 to output as 04, etc.
+  if (sec.length == 1) {	
+		var sec = '0' + sec;  
+  }
+  
+  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
   return time;
 }
 
@@ -54,8 +61,8 @@ EthereumController.prototype._init = function () {
 
 // here are the functions that will overwrite the basecontroller
 EthereumController.prototype._getBlock = function (blockNumber) { 
-	var transactions = [];
 	var retrievedBlock = web3.eth.getBlock(blockNumber);
+	var transactions = [];
 	
 	if (retrievedBlock.transactions.length > 0) {	
 		retrievedBlock.transactions.forEach(function (hash ) {
@@ -81,25 +88,36 @@ EthereumController.prototype._getBlock = function (blockNumber) {
 };
 
 EthereumController.prototype._getBlocks = function () { 
-	var transaction = {
-		from: "Piet",
-		to: "Jan",
-		blockNumber: 123,
-		timestamp: 1429287689,
-		value: 500
-		
-	};
-	var transactions = [transaction, transaction];
-	
-	 var blocks = [
-        { number: 121, transactions: transactions, timestamp: 1429287689 },
-        { number: 122 ,transactions: transactions, timestamp: 1429287688 },
-		{ number: 123 ,transactions: transactions, timestamp: 1429287688 },
-		{ number: 124 ,transactions: transactions, timestamp: 1429287688 },
-        { number: 125 ,transactions: transactions, timestamp: 1429287686 }
-    ];
+	var blocks = [];
 
-	//console.log(blocks);
+	for (var i=0; i < 5; i++) {
+		var transactions = [];
+		var retrievedBlock = web3.eth.getBlock(web3.eth.blockNumber - i);
+		
+		if (retrievedBlock.transactions.length > 0) {	
+			retrievedBlock.transactions.forEach(function (hash ) {
+				var retrievedTransaction = web3.eth.getTransaction(hash);	
+				var transaction = {
+					from: retrievedTransaction.from,
+					to: retrievedTransaction.to,
+					timestamp: timeConverter(retrievedBlock.timestamp),
+					blockNumber: retrievedBlock.number,
+					value: retrievedTransaction.value.toNumber()			
+				};	
+				
+				transactions.push(transaction);	
+			});		
+		}		
+				
+		var block = { 
+			number: retrievedBlock.number, 
+			transactions: transactions, 
+			timestamp: timeConverter(retrievedBlock.timestamp)
+		}
+		
+		blocks.push(block);		
+	};
+
 	return blocks;
 };
 
@@ -125,6 +143,16 @@ EthereumController.prototype._getInfo = function () {
 };
 
 EthereumController.prototype._getTransactions = function () { 
+
+	web3.eth.filter('latest', function(error, result){
+		if (!error)
+			console.log(result);
+	});
+
+	web3.eth.getBlock(blockHashOrBlockNumber, true);
+
+
+
 	var transaction = {
 		from: "Piet",
 		to: "Jan",

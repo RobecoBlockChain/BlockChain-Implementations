@@ -2,6 +2,7 @@ var express = require('express');
 var dummyController = require('./Controllers/DummyController.js');
 var controller = require('./Implementations/Ethereum/EthereumController.js');
 var bodyParser = require('body-parser')
+var opn = require('opn');
 var c = new controller();
 var app = express();
 
@@ -58,4 +59,5 @@ app.post('/getAccount', function(req, res) {
 
 app.listen(8080);
 console.log('8080 is the magic port.');
+//opn('http://localhost:8080/');
 console.log('-----------------------');
