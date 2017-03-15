@@ -26,19 +26,19 @@ BaseController.prototype._getInfo = function(){
 	throw "NotImplementedException";
 };
 
-BaseController.prototype._getBalance = function(accountNumber){	
+BaseController.prototype._getBalance = function(){	
 	throw "NotImplementedException";
 };
 
-BaseController.prototype._getTransactionHistory = function(accountNumber){
+BaseController.prototype._getTransactionHistory = function(){
 	throw "NotImplementedException";
 };
 
-BaseController.prototype._sendTransaction = function(from, to, amount){
+BaseController.prototype._sendTransaction = function(to, amount, privateKey){
 	throw "NotImplementedException";
 };
 
-BaseController.prototype._getAccountNumber = function(){
+BaseController.prototype._setAccountNumber = function(accountNumber){
 	throw "NotImplementedException";
 };
 
@@ -125,16 +125,16 @@ BaseController.prototype.getInfo = function(){
 	return(this._getInfo());
 };
 
-BaseController.prototype.getBalance = function(accountNumber){
+BaseController.prototype.getBalance = function(){
 	/*
-	Returns a string.
+	Returns a number.
 	*/
 	
 	console.log("\nRetrieving balance...");
-	return(this._getBalance(accountNumber));
+	return(this._getBalance());
 };
 
-BaseController.prototype.getTransactionHistory = function(accountNumber){
+BaseController.prototype.getTransactionHistory = function(){
 	/*
 	var transaction = {
 		to: string,
@@ -147,21 +147,21 @@ BaseController.prototype.getTransactionHistory = function(accountNumber){
 	*/
 	
 	console.log("Retrieving transaction history...");
-	return(this._getTransactionHistory(accountNumber));
+	return(this._getTransactionHistory());
 };
 
-BaseController.prototype.sendTransaction = function(from, to, amount){
+BaseController.prototype.sendTransaction = function(to, amount, privateKey){
 	console.log("Sending transaction...");
-	return(this._sendTransaction(from, to, amount));
+	this._sendTransaction(to, amount, privateKey);
 };
 
-BaseController.prototype.getAccountNumber = function(){
+BaseController.prototype.setAccountNumber = function(accountNumber){
 	/*
-	Returns a string.	
+	sets default accountNumber in blockchain controller.	
 	*/
 	
-	console.log("Retrieving account number...");
-	return(this._getAccountNumber());
+	console.log("Setting account number...");
+	this._setAccountNumber(accountNumber);
 };
 
 module.exports = BaseController;

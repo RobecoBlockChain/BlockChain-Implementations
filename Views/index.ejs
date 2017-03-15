@@ -157,7 +157,7 @@
                             
                             <div class="row">
                             	<div class="col-md-6">
-                                	<div class="balance-style"> Your Balance:</div><div class="balance-style" id="Balance"> </div>                            
+                                	<div class="balance-style"> Your Balance:</div><div class="balance-style" id="Balance"></div>                            
                                 </div>
                                 <div class="col-md-6">
 								
@@ -171,11 +171,11 @@
                             </div>
                             
                             <div class="row">
-                                <div id="send-transaction-text" class="col-md-6">Send Transaction</div>
+                                <div id="send-transaction-text" class="col-md-6">Send Transaction (in Ether)</div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                <input type="text" class="search-query form-control" placeholder="Recipient Address" />
+                                <input type="text" class="search-query form-control" id="recipient" placeholder="Recipient Address" />
                                 </div>
                             </div>
                     	
@@ -191,6 +191,11 @@
                               </div>
                             
                             </div>
+							<div class="row">
+                              <div class="col-md-4">
+								<input type="text" id="private-key" class="search-query form-control" placeholder="Private Key" /> 
+							  </div>
+							</div>
                             
                              <div class="row">
                             	<div class="col-md-6">
@@ -269,6 +274,25 @@
 					   '</table>';
 	
 			$("#transactions-history-table").html(table);
+		  }
+		});
+	});
+	
+	// retrieves user input from textboxes on WALLET page and sends
+	// the amount to the specified user
+	// alerts the user when transaction is a success
+	$("#transaction-submit").on('click', function() {
+		$.ajax({
+		  type: 'POST',
+		  url: '/sendTransaction',
+		  data: { to: $( "#recipient" ).val(),
+				  amount: $( "#amount-to-send" ).val() ,
+				  privateKey: $( "#private-key" ).val()},
+		  success: function() {	  
+			alertify.alert("Amount successfully sent!");
+		  },
+		  fail: function() {
+			alertify.alert("Something went terribly wrong...");		  
 		  }
 		});
 	});

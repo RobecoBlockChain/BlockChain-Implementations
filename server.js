@@ -21,6 +21,7 @@ app.get('/', function(req, res) {
 	var info = c.getInfo();
 	var transactions = c.getTransactions();
 	
+	console.log('Done!');
     res.render('index', {
         blocks: blocks,
 		info: info,
@@ -33,28 +34,29 @@ app.get('/', function(req, res) {
 app.post('/getBlock', function(req, res) {
 	var block = c.getBlock(req.body.blockNumber);
 	
+	console.log('Done!');
 	res.send(block);	
 });
 
 // responds to the post that is triggered on the Wallet Page
 // when the user fills in his account number
 app.post('/getAccount', function(req, res) {
-	defaultAccountNumber = req.body.accountNumber;
-
+	var defaultAccount = c.setAccountNumber(req.body.accountNumber)
 	var resultData = {
-		accountNumber: defaultAccountNumber,
+		accountNumber: req.body.accountNumber,
 		balance: c.getBalance(),
-	    transactionHistory: c.getTransactionHistory(defaultAccountNumber)
+	    transactionHistory: c.getTransactionHistory()
 	};
 	
+	console.log('Done!');
 	res.send(resultData);
 });
 
 // responds to the post that is triggered on the Wallet Page
 // when the user sends a transaction
-app.post('/getAccount', function(req, res) {
-	//sendTransaction(from, to, amount)
-	//TODO
+app.post('/sendTransaction', function(req, res) {
+	c.sendTransaction(req.body.to, req.body.amount, req.body.privateKey);
+	console.log('Done!');
 });
 
 app.listen(8080);
