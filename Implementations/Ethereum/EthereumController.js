@@ -12,6 +12,51 @@ var Tx = require('ethereumjs-tx')
 util.inherits(EthereumController, BaseController);
 moment().format();
 
+
+function printTransaction(txHash) {
+  var tx = web3.eth.getTransaction(txHash);
+  if (tx != null) {
+    console.log("  tx hash          : " + tx.hash + "\n"
+      + "   nonce           : " + tx.nonce + "\n"
+      + "   blockHash       : " + tx.blockHash + "\n"
+      + "   blockNumber     : " + tx.blockNumber + "\n"
+      + "   transactionIndex: " + tx.transactionIndex + "\n"
+      + "   from            : " + tx.from + "\n" 
+      + "   to              : " + tx.to + "\n"
+      + "   value           : " + tx.value + "\n"
+      + "   gasPrice        : " + tx.gasPrice + "\n"
+      + "   gas             : " + tx.gas + "\n"
+      + "   input           : " + tx.input);
+  }
+}
+
+function printBlock(block) {
+  console.log("Block number     : " + block.number + "\n"
+    + " hash            : " + block.hash + "\n"
+    + " parentHash      : " + block.parentHash + "\n"
+    + " nonce           : " + block.nonce + "\n"
+    + " sha3Uncles      : " + block.sha3Uncles + "\n"
+    + " logsBloom       : " + block.logsBloom + "\n"
+    + " transactionsRoot: " + block.transactionsRoot + "\n"
+    + " stateRoot       : " + block.stateRoot + "\n"
+    + " miner           : " + block.miner + "\n"
+    + " difficulty      : " + block.difficulty + "\n"
+    + " totalDifficulty : " + block.totalDifficulty + "\n"
+    + " extraData       : " + block.extraData + "\n"
+    + " size            : " + block.size + "\n"
+    + " gasLimit        : " + block.gasLimit + "\n"
+    + " gasUsed         : " + block.gasUsed + "\n"
+    + " timestamp       : " + block.timestamp + "\n"
+    + " transactions    : " + block.transactions + "\n"
+    + " uncles          : " + block.uncles);
+    if (block.transactions != null) {
+      console.log("--- transactions ---");
+      block.transactions.forEach( function(e) {
+        printTransaction(e);
+      })
+    }
+}
+
 function timeConverter(UNIX_timestamp){
   var a = new Date(UNIX_timestamp * 1000);
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -145,6 +190,8 @@ function scanBlockRange(startingBlock, stoppingBlock, callback, transactionHisto
     return nt; 
 }
 
+/*    End of async block retrieving                  */
+
 // constructor
 function EthereumController() {
     BaseController.apply(this, arguments);
@@ -203,25 +250,24 @@ EthereumController.prototype._getBlock = function (blockNumber) {
 
 EthereumController.prototype._getBlocks = function () { 
 	var blocks = [];
-
-	//var transaction = web3.eth.getTransaction('0x4ec6e56d83bf6ce7ebfc065abebbfd8c0c78f702f568e55e8c24a2af70e31d08');
+		
+	//var pendingBlock = web3.eth.getBlock('pending');
+	//printBlock(pendingBlock);
 	
-	//console.log(transaction.to);
-	//console.log(transaction.from);
-	//console.log(transaction.value);
-	
-	
+	web3.eth.defaultAccount = '0x8FDE5B5572fF1CA4a60a24CdB8169c16D071E787';
+		
 	var privateKey = new Buffer('1609741cd9ea824520bcb1d97bbf446f6fe12a960f0cf87a5fb97dccbf019c32', 'hex');
+	var currentNonce = web3.eth.getTransactionCount(web3.eth.defaultAccount);
+	console.log(currentNonce);
 	
 	var rawTx = {
-	  nonce: 'CX350',
-	  gas: web3.toHex(25000),
-	  gasPrice: web3.toHex(25000000000), 
-	  gasLimit:  web3.toHex(3141592),
-	  from: '0x8FDE5B5572fF1CA4a60a24CdB8169c16D071E787',
+	  nonce: web3.toHex(currentNonce + 1),
+	  gas: web3.toHex(21000),
+	  gasPrice: web3.toHex(20000000000), 
+	  gasLimit:  web3.toHex(31500),
+	  from: web3.eth.defaultAccount,
 	  to: '0x6f0810052f8F3f1723B7D682a450EdF3BE371274', 
-	  value: web3.toHex(web3.toWei(6, "ether")),
-	  data: '0x19dacbf83c5de6658e14cbf7bcae5c15eca2eedecf1c66fbca928e4d351bea0f'
+	  value: web3.toHex(web3.toWei(50, "ether"))
 	}
 
 	var tx = new Tx(rawTx);
@@ -229,18 +275,20 @@ EthereumController.prototype._getBlocks = function () {
 
 	var serializedTx = tx.serialize();
 	
-	/*
+	
 	web3.eth.sendRawTransaction(serializedTx.toString('hex'), function(err, address) {
 	  if (!err) {
 		console.log("\n Address: " + address);
 		console.log("\nSuccessfully sent!"); 	
+		var pendingBlock = web3.eth.getBlock('pending');
+		printBlock(pendingBlock);
 	  }
 	  else {
 		console.log(err);	  
 	  }
 	});	
-	*/
 	
+
 	
 	for (var i=0; i < 5; i++) {
 		var transactions = [];
@@ -342,13 +390,13 @@ EthereumController.prototype._getTransactionHistory = function () {
 };
 
 EthereumController.prototype._sendTransaction = function (to, amount, privateKey) { 
-	var privateKey = new Buffer(privateKey, 'hex');
+	var privateKey = new Buffer('1609741cd9ea824520bcb1d97bbf446f6fe12a960f0cf87a5fb97dccbf019c32', 'hex');
 
 	var rawTx = {
-	  nonce: '0x00',
+	  nonce: web3.toHex(5),
 	  gasPrice: '0x09184e72a000', 
 	  gasLimit: '0x2710',
-	  to: to, 
+	  to: '0x6f0810052f8F3f1723B7D682a450EdF3BE371274', 
 	  value: '0x01',
 	  data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
 	}
@@ -368,112 +416,7 @@ EthereumController.prototype._sendTransaction = function (to, amount, privateKey
 		console.log("Error: " + err);	  
 	  }
 	});
-	
-	/*
-	var transaction = {
-		from: web3.eth.defaultAccount,
-		to: to,
-		value: web3.toWei(amount, "ether")			
-	};	
-	
-	web3.eth.sendTransaction({transaction}, function(err, address) {
-	  if (!err) {
-		console.log(address);
-		console.log("\nSuccessfully sent!"); 	
-	  }
-	});
-	*/
-	/*
-	var Transaction = require('../index.js')
 
-	// create a blank transaction
-	var tx = new Transaction(null, 1) // mainnet Tx EIP155
-
-	// So now we have created a blank transaction but Its not quiet valid yet. We
-	// need to add some things to it. Lets start:
-	// notice we don't set the `to` field because we are creating a new contract.
-	tx.nonce = 0
-	tx.gasPrice = 100
-	tx.gasLimit = 1000
-	tx.value = 0
-	tx.data = '0x7f4e616d65526567000000000000000000000000000000000000000000000000003057307f4e616d6552656700000000000000000000000000000000000000000000000000573360455760415160566000396000f20036602259604556330e0f600f5933ff33560f601e5960003356576000335700604158600035560f602b590033560f60365960003356573360003557600035335700'
-
-	var privateKey = new Buffer('e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109', 'hex')
-	tx.sign(privateKey)
-	// We have a signed transaction, Now for it to be fully fundable the account that we signed
-	// it with needs to have a certain amount of wei in to. To see how much this
-	// account needs we can use the getUpfrontCost() method.
-	var feeCost = tx.getUpfrontCost()
-	tx.gas = feeCost
-	console.log('Total Amount of wei needed:' + feeCost.toString())
-
-	// if your wondering how that is caculated it is
-	// bytes(data length) * 5
-	// + 500 Default transaction fee
-	// + gasAmount * gasPrice
-
-	// lets serialize the transaction
-
-	console.log('---Serialized TX----')
-	console.log(tx.serialize().toString('hex'))
-	console.log('--------------------')
-
-	// Now that we have the serialized transaction we can get AlethZero to except by
-	// selecting debug>inject transaction and pasting the transaction serialization and
-	// it should show up in pending transaction.
-
-	// Parsing & Validating transactions
-	// If you have a transaction that you want to verify you can parse it. If you got
-	// it directly from the network it will be rlp encoded. You can decode you the rlp
-	// module. After that you should have something like
-	var rawTx = [
-	  '0x00',
-	  '0x09184e72a000',
-	  '0x2710',
-	  '0x0000000000000000000000000000000000000000',
-	  '0x00',
-	  '0x7f7465737432000000000000000000000000000000000000000000000000000000600057',
-	  '0x1c',
-	  '0x5e1d3a76fbf824220eafc8c79ad578ad2b67d01b0c2425eb1f1347e8f50882ab',
-	  '0x5bd428537f05f9830e93792f90ea6a3e2d1ee84952dd96edbae9f658f831ab13'
-	]
-
-	var tx2 = new Transaction(rawTx)
-
-	// Note rlp.decode will actully produce an array of buffers `new Transaction` will
-	// take either an array of buffers or an array of hex strings.
-	// So assuming that you were able to parse the tranaction, we will now get the sender's
-	// address
-
-	console.log('Senders Address: ' + tx2.getSenderAddress().toString('hex'))
-
-	// Cool now we know who sent the tx! Lets verfy the signature to make sure it was not
-	// some poser.
-
-	if (tx2.verifySignature()) {
-	  console.log('Signature Checks out!')
-	}
-
-	// And hopefully its verified. For the transaction to be totally valid we would
-	// also need to check the account of the sender and see if they have at least
-	// `TotalFee`.
-	*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 };
 

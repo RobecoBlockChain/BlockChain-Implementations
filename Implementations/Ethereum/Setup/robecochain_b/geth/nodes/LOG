@@ -1,0 +1,48 @@
+=============== Mar 22, 2017 (CET) ===============
+11:05:54.018554 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+11:05:54.023570 db@open opening
+11:05:54.025572 version@stat F·[] S·0B[] Sc·[]
+11:05:54.029583 db@janitor F·2 G·0
+11:05:54.029583 db@open done T·6.0126ms
+=============== Mar 22, 2017 (CET) ===============
+11:10:05.875411 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+11:10:05.878418 version@stat F·[] S·0B[] Sc·[]
+11:10:05.878418 db@open opening
+11:10:05.879421 journal@recovery F·1
+11:10:05.880424 journal@recovery recovering @1
+11:10:05.885437 memdb@flush created L0@2 N·9 S·511B "n:\x11..ing,v9":"version,v1"
+11:10:05.887443 version@stat F·[1] S·511B[511B] Sc·[0.25]
+11:10:05.894462 db@janitor F·3 G·0
+11:10:05.894462 db@open done T·16.0436ms
+=============== Mar 22, 2017 (CET) ===============
+11:11:09.279594 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+11:11:09.281600 version@stat F·[1] S·511B[511B] Sc·[0.25]
+11:11:09.281600 db@open opening
+11:11:09.282101 journal@recovery F·1
+11:11:09.282602 journal@recovery recovering @3
+11:11:09.288617 memdb@flush created L0@5 N·4 S·456B "n:\x11..ing,v14":"n:\xde..ing,v13"
+11:11:09.289623 version@stat F·[2] S·967B[967B] Sc·[0.50]
+11:11:09.294636 db@janitor F·4 G·0
+11:11:09.294636 db@open done T·13.0368ms
+11:12:01.310831 table@compaction L0·2 -> L1·0 S·967B Q·67
+11:12:01.316429 table@build created L1@8 N·5 S·475B "n:\x11..ing,v14":"version,v1"
+11:12:01.316429 version@stat F·[0 1] S·475B[0B 475B] Sc·[0.00 0.00]
+11:12:01.318474 table@compaction committed F-1 S-492B Ke·0 D·8 T·7.1791ms
+11:12:01.318934 table@remove removed @5
+11:12:01.318934 table@remove removed @2
+=============== Mar 22, 2017 (CET) ===============
+11:19:27.747780 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+11:19:27.750789 version@stat F·[0 1] S·475B[0B 475B] Sc·[0.00 0.00]
+11:19:27.750789 db@open opening
+11:19:27.750789 journal@recovery F·1
+11:19:27.751793 journal@recovery recovering @6
+11:19:27.758808 memdb@flush created L0@9 N·488 S·4KiB "n:\x11..ing,v501":"n:\xde..ing,v17"
+11:19:27.760815 version@stat F·[1 1] S·5KiB[4KiB 475B] Sc·[0.25 0.00]
+11:19:27.767833 db@janitor F·4 G·0
+11:19:27.767833 db@open done T·17.044ms
+11:19:51.796180 table@compaction L0·1 -> L1·1 S·5KiB Q·528
+11:19:51.800191 table@build created L1@12 N·5 S·505B "n:\x11..ing,v501":"version,v1"
+11:19:51.800191 version@stat F·[0 1] S·505B[0B 505B] Sc·[0.00 0.00]
+11:19:51.801194 table@compaction committed F-1 S-4KiB Ke·0 D·488 T·5.0143ms
+11:19:51.801194 table@remove removed @9
+11:19:51.802196 table@remove removed @8
