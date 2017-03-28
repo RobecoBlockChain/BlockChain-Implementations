@@ -10,7 +10,7 @@ BaseController.prototype._init = function(){
 	throw "NotImplementedException";
 };
 
-BaseController.prototype._getTransactions = function(){
+BaseController.prototype._getTransactions = function(callback){
 	throw "NotImplementedException";
 };
 
@@ -30,7 +30,7 @@ BaseController.prototype._getBalance = function(){
 	throw "NotImplementedException";
 };
 
-BaseController.prototype._getTransactionHistory = function(){
+BaseController.prototype._getTransactionHistory = function(callback){
 	throw "NotImplementedException";
 };
 
@@ -93,20 +93,21 @@ BaseController.prototype.getBlock = function(blockNumber){
 	return(this._getBlock(blockNumber));
 };
 
-BaseController.prototype.getTransactions = function(){
+BaseController.prototype.getTransactions = function(callback){
 	/*
 	var transaction = {
 		from: string,
 		to: string,
+		blockNumber: int,
 		timestamp: timestamp,
-		value: int	
+		value: string	
 	};
 	
 	Returns an array of transaction objects.
 	*/
 	
 	console.log("Retrieving five latest transactions...");
-	return(this._getTransactions());
+	return(this._getTransactions(callback));
 };
 
 BaseController.prototype.getInfo = function(){
@@ -130,11 +131,11 @@ BaseController.prototype.getBalance = function(){
 	Returns a number.
 	*/
 	
-	console.log("\nRetrieving balance...");
+	console.log("Retrieving balance...");
 	return(this._getBalance());
 };
 
-BaseController.prototype.getTransactionHistory = function(){
+BaseController.prototype.getTransactionHistory = function(callback){
 	/*
 	var transaction = {
 		to: string,
@@ -147,7 +148,7 @@ BaseController.prototype.getTransactionHistory = function(){
 	*/
 	
 	console.log("Retrieving transaction history...");
-	return(this._getTransactionHistory());
+	return(this._getTransactionHistory(callback));
 };
 
 BaseController.prototype.sendTransaction = function(to, amount, privateKey){

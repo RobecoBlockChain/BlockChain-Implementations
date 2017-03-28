@@ -19,14 +19,14 @@ app.get('/', function(req, res) {
 	c.init();
 	var blocks = c.getBlocks(); 
 	var info = c.getInfo();
-	var transactions = c.getTransactions();
-	
-	console.log('Done!');
-    res.render('index', {
-        blocks: blocks,
-		info: info,
-		transactions: transactions
-    });
+	c.getTransactions(function(result) {
+		console.log('Done retrieving transactions!');
+		res.render('index', {
+			blocks: blocks,
+			info: info,
+			transactions: result
+		});	
+	});
 });
 
 // responds to the post that is triggered on the Admin Page
@@ -41,15 +41,20 @@ app.post('/getBlock', function(req, res) {
 // responds to the post that is triggered on the Wallet Page
 // when the user fills in his account number
 app.post('/getAccount', function(req, res) {
-	var defaultAccount = c.setAccountNumber(req.body.accountNumber)
-	var resultData = {
-		accountNumber: req.body.accountNumber,
-		balance: c.getBalance(),
-	    transactionHistory: c.getTransactionHistory()
-	};
+	var defaultAccount = c.setAccountNumber(req.body.accountNumber);
+	var	accountNumber = req.body.accountNumber;
+	var	balance = c.getBalance();
 	
-	console.log('Done!');
-	res.send(resultData);
+	c.getTransactionHistory(function(result) {
+		console.log('Done!');	
+		var resultData = {
+			accountNumber: accountNumber,
+			balance: balance,
+			transactionHistory: result
+		};
+		
+		res.send(resultData);
+	});
 });
 
 // responds to the post that is triggered on the Wallet Page
@@ -61,5 +66,4 @@ app.post('/sendTransaction', function(req, res) {
 
 app.listen(8080);
 console.log('8080 is the magic port.');
-//opn('http://localhost:8080/');
 console.log('-----------------------');

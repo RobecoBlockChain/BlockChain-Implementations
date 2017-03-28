@@ -88,45 +88,41 @@ function timeConverter(UNIX_timestamp){
 
 let maxThreads = 50;
 
-function scanTransactionCallback(txn, block) {
-    if (txn.to === web3.eth.defaultAccount) {
-        // A transaction credited ether into this wallet
-        var ether = web3.fromWei(txn.value, 'ether');
-		 console.log(`\r${block.timestamp} +${ether} from ${txn.from}`);
-    } 
-	else if (txn.from === web3.eth.defaultAccount) {
-        // A transaction debitted ether from this wallet
-        var ether = web3.fromWei(txn.value, 'ether');
-		console.log(`\r${block.timestamp} -${ether} to ${txn.to}`);
-    }
-}
-
-function scanBlockCallback(block, transactionHistory) {
+function scanBlockCallback(block, accountAddress, transactionHistory) {
     if (block.transactions) {
         for (var i = 0; i < block.transactions.length; i++) {
-            var txn = block.transactions[i];
-			console.log('\nFound one... ');
-			
-			var transaction = {
-				to: txn.to,
-				block: txn.blockNumber,
-				timestamp: txn.timestamp,
-				amount: txn.value
-			};			
-			
-			console.log(transaction);
-			transactionHistory.push(transaction);
-			
-            scanTransactionCallback(txn, block);
+            var txn = block.transactions[i];		
+
+			if (accountAddress != null) {	
+				if (accountAddress.toLowerCase() == txn.from) {
+					var transaction = {
+					to: txn.to,
+					block: txn.blockNumber,
+					timestamp: timeConverter(block.timestamp),
+					amount: (web3.fromWei(txn.value, 'ether') + ' ether')
+					};					
+					transactionHistory.push(transaction);		
+				}
+			}
+			else {					
+				var transaction = {
+					from: txn.from,
+					to: txn.to,
+					blockNumber: txn.blockNumber,
+					timestamp: timeConverter(block.timestamp),
+					value: (web3.fromWei(txn.value, 'ether') + ' ether')
+				};	
+				transactionHistory.push(transaction);
+			}
         }
     }
 }
 
-function scanBlockRange(startingBlock, stoppingBlock, callback, transactionHistory) {
-
+function scanBlockRange(startingBlock, stoppingBlock, accountAddress, callback) {
     let blockNumber = startingBlock,
         gotError = false,
         numThreads = 0,
+		transactionHistory = []
         startTime = new Date();
 
     function getPercentComplete(bn) {
@@ -148,13 +144,13 @@ function scanBlockRange(startingBlock, stoppingBlock, callback, transactionHisto
 
             process.stdout.write("\r"+msg+spaces+"\n");
             if (callback) {
-                callback(gotError, stoppingBlock);
+				callback(gotError, transactionHistory);
             }
         }
         return numThreads;
     }
 
-    function asyncScanNextBlock(transactionHistory) {
+    function asyncScanNextBlock(accountAddress, transactionHistory) {
         if (gotError) {
             return exitThread();
         }
@@ -175,8 +171,8 @@ function scanBlockRange(startingBlock, stoppingBlock, callback, transactionHisto
                 gotError = true;
                 console.error("Error:", error);
             } else {
-                scanBlockCallback(block, transactionHistory);
-                asyncScanNextBlock(transactionHistory);
+				scanBlockCallback(block, accountAddress, transactionHistory);
+				asyncScanNextBlock(accountAddress, transactionHistory);
             }
         });
     }
@@ -184,7 +180,7 @@ function scanBlockRange(startingBlock, stoppingBlock, callback, transactionHisto
     var nt;
     for (nt = 0; nt < maxThreads && startingBlock + nt <= stoppingBlock; nt++) {
         numThreads++;
-        asyncScanNextBlock(transactionHistory);
+        asyncScanNextBlock(accountAddress, transactionHistory);
     }
 
     return nt; 
@@ -249,19 +245,21 @@ EthereumController.prototype._getBlock = function (blockNumber) {
 };
 
 EthereumController.prototype._getBlocks = function () { 
-	var blocks = [];
-		
-	//var pendingBlock = web3.eth.getBlock('pending');
-	//printBlock(pendingBlock);
-	
+		/*
 	web3.eth.defaultAccount = '0x8FDE5B5572fF1CA4a60a24CdB8169c16D071E787';
 		
 	var privateKey = new Buffer('1609741cd9ea824520bcb1d97bbf446f6fe12a960f0cf87a5fb97dccbf019c32', 'hex');
+	
+	// If you send a transaction, and it is not mined yet, the nonce will be the same as before.
+	// How we fix this..
 	var currentNonce = web3.eth.getTransactionCount(web3.eth.defaultAccount);
 	console.log(currentNonce);
 	
+	var count = web3.eth.getTransactionCount(web3.eth.defaultAccount, "pending");
+		console.log(count);
+	
 	var rawTx = {
-	  nonce: web3.toHex(currentNonce + 1),
+	  nonce: web3.toHex(count + 1),
 	  gas: web3.toHex(21000),
 	  gasPrice: web3.toHex(20000000000), 
 	  gasLimit:  web3.toHex(31500),
@@ -280,16 +278,17 @@ EthereumController.prototype._getBlocks = function () {
 	  if (!err) {
 		console.log("\n Address: " + address);
 		console.log("\nSuccessfully sent!"); 	
-		var pendingBlock = web3.eth.getBlock('pending');
-		printBlock(pendingBlock);
+		
+		count = web3.eth.getTransactionCount(web3.eth.defaultAccount, "pending");
+		console.log(count);
 	  }
 	  else {
 		console.log(err);	  
 	  }
 	});	
-	
-
-	
+	*/
+		
+	var blocks = [];
 	for (var i=0; i < 5; i++) {
 		var transactions = [];
 		var retrievedBlock = web3.eth.getBlock(web3.eth.blockNumber - i, true);
@@ -347,18 +346,14 @@ EthereumController.prototype._getInfo = function () {
 	return info;
 };
 
-EthereumController.prototype._getTransactions = function () { 
-	var transaction = {
-		from: "Piet",
-		to: "Jan",
-		value: 500,
-		blockNumber: 123,
-		timestamp: 1429287689
-	};
-	var transactions = [transaction, transaction, transaction, transaction, transaction];
-	
-	//console.log(transactions);
-	return transactions;
+EthereumController.prototype._getTransactions = function (callback) { 	
+	//206727 is 5 blocks ago
+	scanBlockRange(web3.eth.blockNumber-4000, web3.eth.blockNumber, null, function(error, result) {		
+		if (error)
+			console.log(error);		
+
+		callback(result.reverse());
+	});
 };
 
 EthereumController.prototype._getBalance = function () { 
@@ -368,55 +363,45 @@ EthereumController.prototype._getBalance = function () {
 	return balance;
 };
 
-EthereumController.prototype._getTransactionHistory = function () { 	
-
-	//var transactionHistory = [];
-		
-	//scanBlockRange(web3.eth.blockNumber-300, web3.eth.blockNumber, null, transactionHistory);
-	
-	//console.log(transactionHistory);
-	
-	var transaction = {
-		to: "Piet",
-		block: "#1235",
-		timestamp: 1429287689,
-		amount: 123
-	};
-	var transactions = [transaction, transaction, transaction, transaction, transaction];
-	
-	//console.log("accountNumber: " + accountNumber);
-	//console.log(transactions);
-	return transactions;
+EthereumController.prototype._getTransactionHistory = function (callback) { 	
+	scanBlockRange(web3.eth.blockNumber-4000, web3.eth.blockNumber, web3.eth.defaultAccount, function(error, result) {		
+		if (error)
+			console.log(error);		
+		callback(result.reverse());
+	});
 };
 
 EthereumController.prototype._sendTransaction = function (to, amount, privateKey) { 
-	var privateKey = new Buffer('1609741cd9ea824520bcb1d97bbf446f6fe12a960f0cf87a5fb97dccbf019c32', 'hex');
+	var privateKey = new Buffer(privateKey, 'hex');
+	
+	// Retrieving the latest pending transaction is bugged, see https://github.com/ethereum/go-ethereum/issues/2880
+	// This means that we can only send a transaction, if the PREVIOUS transaction that we sent is mined
+	var latestNonce = web3.eth.getTransactionCount(web3.eth.defaultAccount, "pending");
+	console.log('Nonce: ' + latestNonce);	
 
 	var rawTx = {
-	  nonce: web3.toHex(5),
-	  gasPrice: '0x09184e72a000', 
-	  gasLimit: '0x2710',
-	  to: '0x6f0810052f8F3f1723B7D682a450EdF3BE371274', 
-	  value: '0x01',
-	  data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
+	  nonce: web3.toHex(latestNonce+1),
+	  gas: web3.toHex(21000),
+	  gasPrice: web3.toHex(20000000000), 
+	  gasLimit:  web3.toHex(31500),
+	  to: to, 
+	  value: web3.toHex(web3.toWei(amount, "ether"))
 	}
-
+	
 	var tx = new Tx(rawTx);
 	tx.sign(privateKey);
-
 	var serializedTx = tx.serialize();
-	console.log(serializedTx.toString('hex'));
 	
 	web3.eth.sendRawTransaction(serializedTx.toString('hex'), function(err, address) {
 	  if (!err) {
-		console.log(address);
-		console.log("\nSuccessfully sent!"); 	
+		console.log("\nSuccessfully sent!"); 		
+		console.log('\nTransaction address: ' + address);
+		console.log('\nTransaction: \n' + printTransaction(address));
 	  }
 	  else {
-		console.log("Error: " + err);	  
+		console.log(err);	  
 	  }
-	});
-
+	});	
 	
 };
 
@@ -426,77 +411,3 @@ EthereumController.prototype._setAccountNumber = function (accountNumber) {
 
 // export all functions so they can be used by our app
 module.exports = EthereumController;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-// Retrieve the latest (not empty) blocks 
-// From these blocks, get the transaction(s)
-// From this transaction, get From,To,Amount,Timestamp
-app.get('/', function (req, res) {
-   console.log("Received request.");
-   var list = [];
-   var y = 1;
-   var i = 0;
-   
-   while (i < y)
-   {
-	      
-   var transactionlist = web3.eth.getBlock(web3.eth.blockNumber - i).transactions;	
-	
-	// A lot of empty blocks show up -> Why?
-	// To avoid this, we check if list of transactions is empty
-	if(transactionlist.length > 0) {  
-		console.log(transactionlist);
-		var transaction = web3.eth.getTransaction(web3.eth.getBlock(web3.eth.blockNumber - i).blockNumber, 1);
-		console.log(transaction);
-		list.push(transaction);		
-	}
-	else {
-		y = y + 1;	
-	}
-	
-	i = i + 1;
-   }
-   
-  
-})
-*/
-
-/*
-
-var currentBlockNumber = web3.eth.blockNumber;
-console.log("Current BlockNumber: " + currentBlockNumber + "\n");
-
-web3.eth.filter('pending').watch(function(error, result) 
-{
-  console.log("A transaction is pending! Waiting for it to confirm and be validated...");
-});
-
-web3.eth.filter('latest').watch(function(error, result) 
-{
-  var block = web3.eth.getBlock(result, true);
-
-  console.log('block #' + block.number);
-  console.dir(block.transactions);
-});
-
-*/
